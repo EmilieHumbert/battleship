@@ -4,10 +4,17 @@ const Ship = (length) => {
   return {
     hit: (index) => {
       if (index < 0 || index >= data.length) {
-        throw new Error('Invalid index');
+        throw new Error("Invalid index");
       }
 
-      return (data[index] = true)
+      data[index] = true;
+    },
+    isHit: (index) => {
+      if (index < 0 || index >= data.length) {
+        throw new Error("Invalid index");
+      }
+
+      return data[index];
     },
     isSunk: () => data.every((value) => value === true),
   };
