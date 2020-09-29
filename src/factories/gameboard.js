@@ -4,6 +4,7 @@ import Ship from "./ship";
 const Gameboard = () => {
   const size = 5;
   const data = Array(size * size).fill(null);
+  const ships = [];
 
   // Default positions for now
   [
@@ -12,6 +13,8 @@ const Gameboard = () => {
     [4, 20],
   ].forEach(([length, startIndex]) => {
     const ship = Ship(length);
+
+    ships.push(ship);
 
     Array(length)
       .fill()
@@ -28,10 +31,7 @@ const Gameboard = () => {
 
       const cell = data[index];
 
-      if (
-        cell === false ||
-        (cell && cell.ship.isHit(cell.index))
-      ) {
+      if (cell === false || (cell && cell.ship.isHit(cell.index))) {
         throw new Error("Already attacked");
       }
 
@@ -43,6 +43,7 @@ const Gameboard = () => {
         cell.ship.hit(cell.index);
       }
     },
+    allShipsSunk: () => ships.every((ship) => ship.isSunk()),
   };
 };
 
