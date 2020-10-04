@@ -1,8 +1,11 @@
-const Player = (isComputer = false) => {
-  const gameboardSize = 25;
-  const availablePlays = Array(gameboardSize)
-    .fill()
-    .map((_, index) => index);
+import { useState } from "react";
+
+const Player = (gameboardSize, isComputer = false) => {
+  const [availablePlays, setAvailablePlays] = useState(
+    Array(gameboardSize * gameboardSize)
+      .fill()
+      .map((_, index) => index)
+  );
 
   return {
     isComputer: Boolean(isComputer),
@@ -11,8 +14,12 @@ const Player = (isComputer = false) => {
       if (playIndex === availablePlays.length) {
         playIndex = playIndex - 1;
       }
-      const playResult = availablePlays.splice(playIndex, 1);
-      return playResult[0];
+      const playResult = availablePlays[playIndex];
+      setAvailablePlays(
+        availablePlays.filter((_, index) => playIndex !== index)
+      );
+
+      return playResult;
     },
   };
 };

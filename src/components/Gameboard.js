@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { createShip, hitShip, isShipHit } from "../utils/ship";
 
-function Gameboard({ playerNumber, size }) {
+function Gameboard({ playerNumber, size, hidden, nextTurn, playerRef }) {
   const defaultGameboardData = Array(size * size).fill(null);
   // Default positions for now
   const shipConfiguration = [
@@ -51,7 +51,10 @@ function Gameboard({ playerNumber, size }) {
     if (cell) {
       hitShip(ships[cell.shipId], cell.shipIndex, ships, setShips);
     }
+
+    nextTurn();
   };
+  playerRef.current.receiveAttack = receiveAttack;
 
   const hasCellBeenClicked = (index) => {
     const cell = gameboard[index];
@@ -70,41 +73,61 @@ function Gameboard({ playerNumber, size }) {
 
   return (
     <div>
-      <h2>Players {playerNumber} board</h2>
-      <div
+      <h2
         style={{
-          display: "grid",
-          gridTemplateColumns: "auto auto auto auto auto",
-          width: "250px",
-          padding: "50px",
+          paddingLeft: "50px",
         }}
       >
-        {Array(gameboard.length)
-          .fill()
-          .map((_, index) => {
-            const backgroundColor = gameboard[index]
-              ? ships[gameboard[index].shipId][gameboard[index].shipIndex]
-                ? "#E6B0AA"
-                : "#EBEDEF"
-              : gameboard[index] === false
-              ? "#AED6F1"
-              : "#EBEDEF";
-            return (
-              <div
-                key={`gameboard-${playerNumber}-cell-${index}`}
-                role="button"
-                onClick={setupHandleClick(index)}
-                style={{
-                  backgroundColor,
-                  width: "50px",
-                  height: "50px",
-                }}
-              >
-                .
-              </div>
-            );
-          })}
-      </div>
+        Player {playerNumber} board
+      </h2>
+      {hidden ? (
+        <div
+          style={{
+            width: "250px",
+            height: "250px",
+            marginLeft: "50px",
+            backgroundColor: "black",
+          }}
+        >
+          Waiting
+        </div>
+      ) : (
+        <div
+          // id={`player${playerNumber}`}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "auto auto auto auto auto",
+            width: "250px",
+            paddingLeft: "50px",
+          }}
+        >
+          {Array(gameboard.length)
+            .fill()
+            .map((_, index) => {
+              const backgroundColor = gameboard[index]
+                ? ships[gameboard[index].shipId][gameboard[index].shipIndex]
+                  ? "#E6B0AA"
+                  : "#EBEDEF"
+                : gameboard[index] === false
+                ? "#AED6F1"
+                : "#EBEDEF";
+              return (
+                <div
+                  key={`gameboard-${playerNumber}-cell-${index}`}
+                  role="button"
+                  onClick={setupHandleClick(index)}
+                  style={{
+                    backgroundColor,
+                    width: "50px",
+                    height: "50px",
+                  }}
+                >
+                  .
+                </div>
+              );
+            })}
+        </div>
+      )}
     </div>
   );
 }
