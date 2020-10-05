@@ -7,18 +7,24 @@ const Game = () => {
   const gameboardSize = 5;
   const [turn, setTurn] = useState(0);
   const players = [Player(gameboardSize, false), Player(gameboardSize, true)];
-  const playerRefs = [useRef({}), useRef({})];
+  const gameboardRefs = [useRef({}), useRef({})];
 
   const nextTurn = () => {
+    const currentPlayer = turn;
+    gameboardRefs[currentPlayer].current.setIsActive(false);
+
     const nextPlayer = turn === 0 ? 1 : 0;
 
     setTimeout(() => {
       setTurn(nextPlayer);
+      gameboardRefs[nextPlayer].current.setIsActive(true);
+      gameboardRefs[currentPlayer].current.setIsVisible(false);
+      gameboardRefs[nextPlayer].current.setIsVisible(true);
 
       if (players[nextPlayer].isComputer) {
         setTimeout(() => {
           const index = players[nextPlayer].makePlay();
-          playerRefs[nextPlayer].current.receiveAttack(index);
+          gameboardRefs[nextPlayer].current.receiveAttack(index);
         }, 1000);
       }
     }, 1000);
@@ -31,9 +37,10 @@ const Game = () => {
           key={index}
           player={player}
           size={gameboardSize}
-          hidden={turn !== index}
           nextTurn={nextTurn}
-          playerRef={playerRefs[index]}
+          gameboardRef={gameboardRefs[index]}
+          activeAtStart={index === 0}
+          visibleAtStart={index === 0}
         />
       ))}
     </div>

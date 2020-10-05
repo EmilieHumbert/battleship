@@ -2,7 +2,14 @@ import React, { useState } from "react";
 
 import { createShip, hitShip, isShipHit } from "../utils/ship";
 
-function Gameboard({ player, size, hidden, nextTurn, playerRef }) {
+function Gameboard({
+  activeAtStart,
+  gameboardRef,
+  nextTurn,
+  player,
+  size,
+  visibleAtStart,
+}) {
   const defaultGameboardData = Array(size * size).fill(null);
   // Default positions for now
   const shipConfiguration = [
@@ -25,6 +32,10 @@ function Gameboard({ player, size, hidden, nextTurn, playerRef }) {
 
   const [gameboard, setGameboard] = useState(defaultGameboardData);
   const [ships, setShips] = useState(defaultShipData);
+  const [isActive, setIsActive] = useState(activeAtStart);
+  const [isVisible, setIsVisible] = useState(visibleAtStart);
+  gameboardRef.current.setIsVisible = setIsVisible;
+  gameboardRef.current.setIsActive = setIsActive;
 
   const receiveAttack = (index) => {
     if (index < 0 || index >= gameboard.length) {
@@ -54,7 +65,7 @@ function Gameboard({ player, size, hidden, nextTurn, playerRef }) {
 
     nextTurn();
   };
-  playerRef.current.receiveAttack = receiveAttack;
+  gameboardRef.current.receiveAttack = receiveAttack;
 
   const hasCellBeenClicked = (index) => {
     const cell = gameboard[index];
@@ -64,7 +75,7 @@ function Gameboard({ player, size, hidden, nextTurn, playerRef }) {
   };
 
   const setupHandleClick = (index) => () => {
-    if (hasCellBeenClicked(index) === true || player.isComputer) {
+    if (hasCellBeenClicked(index) === true || player.isComputer || !isActive) {
       return;
     }
 
@@ -78,20 +89,9 @@ function Gameboard({ player, size, hidden, nextTurn, playerRef }) {
           paddingLeft: "50px",
         }}
       >
-        {player.isComputer ? 'Computer' : 'Player'} board
+        {player.isComputer ? "Computer" : "Player"} board
       </h2>
-      {hidden ? (
-        <div
-          style={{
-            width: "250px",
-            height: "250px",
-            marginLeft: "50px",
-            backgroundColor: "black",
-          }}
-        >
-          Waiting
-        </div>
-      ) : (
+      {isVisible ? (
         <div
           style={{
             display: "grid",
@@ -125,6 +125,17 @@ function Gameboard({ player, size, hidden, nextTurn, playerRef }) {
                 </div>
               );
             })}
+        </div>
+      ) : (
+        <div
+          style={{
+            width: "250px",
+            height: "250px",
+            marginLeft: "50px",
+            backgroundColor: "black",
+          }}
+        >
+          Waiting
         </div>
       )}
     </div>
