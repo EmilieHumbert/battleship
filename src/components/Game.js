@@ -26,10 +26,10 @@ const Game = () => {
 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "auto auto" }}>
-      {players.map((_, index) => (
+      {players.map((player, index) => (
         <Gameboard
           key={index}
-          playerNumber={index}
+          player={player}
           size={gameboardSize}
           hidden={turn !== index}
           nextTurn={nextTurn}

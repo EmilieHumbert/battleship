@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { createShip, hitShip, isShipHit } from "../utils/ship";
 
-function Gameboard({ playerNumber, size, hidden, nextTurn, playerRef }) {
+function Gameboard({ player, size, hidden, nextTurn, playerRef }) {
   const defaultGameboardData = Array(size * size).fill(null);
   // Default positions for now
   const shipConfiguration = [
@@ -64,7 +64,7 @@ function Gameboard({ playerNumber, size, hidden, nextTurn, playerRef }) {
   };
 
   const setupHandleClick = (index) => () => {
-    if (hasCellBeenClicked(index) === true) {
+    if (hasCellBeenClicked(index) === true || player.isComputer) {
       return;
     }
 
@@ -78,7 +78,7 @@ function Gameboard({ playerNumber, size, hidden, nextTurn, playerRef }) {
           paddingLeft: "50px",
         }}
       >
-        Player {playerNumber} board
+        {player.isComputer ? 'Computer' : 'Player'} board
       </h2>
       {hidden ? (
         <div
@@ -93,7 +93,6 @@ function Gameboard({ playerNumber, size, hidden, nextTurn, playerRef }) {
         </div>
       ) : (
         <div
-          // id={`player${playerNumber}`}
           style={{
             display: "grid",
             gridTemplateColumns: "auto auto auto auto auto",
@@ -113,7 +112,7 @@ function Gameboard({ playerNumber, size, hidden, nextTurn, playerRef }) {
                 : "#EBEDEF";
               return (
                 <div
-                  key={`gameboard-${playerNumber}-cell-${index}`}
+                  key={`gameboard-cell-${index}`}
                   role="button"
                   onClick={setupHandleClick(index)}
                   style={{
