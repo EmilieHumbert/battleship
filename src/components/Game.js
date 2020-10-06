@@ -9,16 +9,22 @@ const Game = () => {
   const players = [Player(gameboardSize, false), Player(gameboardSize, true)];
   const gameboardRefs = [useRef({}), useRef({})];
 
-  const nextTurn = () => {
-    const currentPlayer = turn;
-    gameboardRefs[currentPlayer].current.setIsActive(false);
-
+  const nextTurn = (previousPlayerIsWinner) => {
+    const previousPlayer = turn;
     const nextPlayer = turn === 0 ? 1 : 0;
+    gameboardRefs[previousPlayer].current.setIsActive(false);
+
+    if (previousPlayerIsWinner) {
+      gameboardRefs[nextPlayer].current.setIsVisible(true);
+      players[previousPlayer].setStatus("Winner");
+      players[nextPlayer].setStatus("Loser");
+      return;
+    }
 
     setTimeout(() => {
       setTurn(nextPlayer);
       gameboardRefs[nextPlayer].current.setIsActive(true);
-      gameboardRefs[currentPlayer].current.setIsVisible(false);
+      gameboardRefs[previousPlayer].current.setIsVisible(false);
       gameboardRefs[nextPlayer].current.setIsVisible(true);
 
       if (players[nextPlayer].isComputer) {

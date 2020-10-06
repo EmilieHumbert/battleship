@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { createShip, hitShip, isShipHit } from "../utils/ship";
+import { createShip, hitShip, isShipHit, isShipSunk } from "../utils/ship";
 
 function Gameboard({
   activeAtStart,
@@ -60,10 +60,22 @@ function Gameboard({
     }
 
     if (cell) {
-      hitShip(ships[cell.shipId], cell.shipIndex, ships, setShips);
+      const shipSunk = hitShip(
+        ships[cell.shipId],
+        cell.shipIndex,
+        ships,
+        setShips
+      );
+
+      if (shipSunk) {
+        const allShipsSunk = ships.every((ship) =>
+          ship === ships[cell.shipId] ? shipSunk : isShipSunk(ship)
+        );
+        return nextTurn(allShipsSunk);
+      }
     }
 
-    nextTurn();
+    nextTurn(false);
   };
   gameboardRef.current.receiveAttack = receiveAttack;
 
@@ -138,6 +150,7 @@ function Gameboard({
           Waiting
         </div>
       )}
+      {player.status && <div>{player.status}</div>}
     </div>
   );
 }

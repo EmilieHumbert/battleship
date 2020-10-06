@@ -6,6 +6,7 @@ const Player = (gameboardSize, isComputer = false) => {
       .fill()
       .map((_, index) => index)
   );
+  const [status, setStatus] = useState(null);
 
   return {
     isComputer: Boolean(isComputer),
@@ -21,6 +22,8 @@ const Player = (gameboardSize, isComputer = false) => {
 
       return playResult;
     },
+    setStatus,
+    status,
   };
 };
 

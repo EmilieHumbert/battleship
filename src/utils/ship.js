@@ -11,13 +11,15 @@ export const hitShip = (ship, shipIndex, ships, setShips) => {
     throw new Error("Invalid ship index");
   }
 
-  setShips(
-    ships.map((loopShip) =>
-      loopShip === ship
-        ? ship.map((value, index) => (index === shipIndex ? true : value))
-        : loopShip
-    )
+  const updatedShip = ship.map((value, index) =>
+    index === shipIndex ? true : value
   );
+
+  setShips(
+    ships.map((loopShip) => (loopShip === ship ? updatedShip : loopShip))
+  );
+
+  return isShipSunk(updatedShip);
 };
 
 export const isShipHit = (ship, shipIndex) => {
