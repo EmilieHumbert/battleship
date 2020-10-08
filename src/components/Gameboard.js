@@ -98,7 +98,7 @@ function Gameboard({
     <div>
       <h2
         style={{
-          paddingLeft: "50px",
+          margin: "50px 200px 30px 200px",
         }}
       >
         {player.isComputer ? "Computer" : "Player"} board
@@ -108,8 +108,8 @@ function Gameboard({
           style={{
             display: "grid",
             gridTemplateColumns: "auto auto auto auto auto",
+            margin: "0 200px",
             width: "250px",
-            paddingLeft: "50px",
           }}
         >
           {Array(gameboard.length)
@@ -129,28 +129,29 @@ function Gameboard({
                   onClick={setupHandleClick(index)}
                   style={{
                     backgroundColor,
-                    width: "50px",
+                    border: "1px solid darkGrey",
                     height: "50px",
+                    width: "50px",
                   }}
-                >
-                  .
-                </div>
+                ></div>
               );
             })}
         </div>
       ) : (
         <div
           style={{
-            width: "250px",
-            height: "250px",
-            marginLeft: "50px",
             backgroundColor: "black",
+            height: "250px",
+            margin: "0 200px",
+            width: "250px",
           }}
         >
           Waiting
         </div>
       )}
-      {player.status && <div>{player.status}</div>}
+      {player.status && (
+        <div style={{ fontWeight: "900", margin: "20px 200px" }}>{player.status}</div>
+      )}
     </div>
   );
 }

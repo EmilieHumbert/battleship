@@ -16,8 +16,8 @@ const Game = () => {
 
     if (previousPlayerIsWinner) {
       gameboardRefs[nextPlayer].current.setIsVisible(true);
-      players[previousPlayer].setStatus("Winner");
-      players[nextPlayer].setStatus("Loser");
+      players[previousPlayer].setStatus("Winner!");
+      players[nextPlayer].setStatus("Loser!");
       return;
     }
 
