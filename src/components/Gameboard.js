@@ -99,6 +99,7 @@ function Gameboard({
       <h2
         style={{
           margin: "50px 200px 30px 200px",
+          textAlign: "center",
         }}
       >
         {player.isComputer ? "Computer" : "Player"} board
@@ -108,7 +109,7 @@ function Gameboard({
           style={{
             display: "grid",
             gridTemplateColumns: "auto auto auto auto auto",
-            margin: "0 200px",
+            margin: "auto",
             width: "250px",
           }}
         >
@@ -142,7 +143,7 @@ function Gameboard({
           style={{
             backgroundColor: "black",
             height: "250px",
-            margin: "0 200px",
+            margin: "auto",
             width: "250px",
           }}
         >
@@ -150,7 +151,9 @@ function Gameboard({
         </div>
       )}
       {player.status && (
-        <div style={{ fontWeight: "900", margin: "20px 200px" }}>{player.status}</div>
+        <div style={{ fontWeight: "900", margin: "20px 200px" }}>
+          {player.status}
+        </div>
       )}
     </div>
   );

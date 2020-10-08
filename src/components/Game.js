@@ -37,18 +37,28 @@ const Game = () => {
   };
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "auto auto" }}>
-      {players.map((player, index) => (
-        <Gameboard
-          key={index}
-          player={player}
-          size={gameboardSize}
-          nextTurn={nextTurn}
-          gameboardRef={gameboardRefs[index]}
-          activeAtStart={index === 0}
-          visibleAtStart={index === 0}
-        />
-      ))}
+    <div>
+      <h1 style={{ textAlign: "center", fontSize: "60px", fontWeight: "900" }}>
+        Battleship
+      </h1>
+      <p style={{ color: "grey", textAlign: "center" }}>
+        To play a game, please pick a square in the player board. If it's{" "}
+        <span style={{ color: "#E6B0AA" }}>red</span>, you hit a ship, if it's
+        <span style={{ color: "#AED6F1" }}> blue</span>, you hit the water.
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "auto auto" }}>
+        {players.map((player, index) => (
+          <Gameboard
+            key={index}
+            player={player}
+            size={gameboardSize}
+            nextTurn={nextTurn}
+            gameboardRef={gameboardRefs[index]}
+            activeAtStart={index === 0}
+            visibleAtStart={index === 0}
+          />
+        ))}
+      </div>
     </div>
   );
 };
